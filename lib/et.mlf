@@ -1,0 +1,13 @@
+﻿# Common M Language File for Estonian. Quantity sufixes are '.1' and '.2'
+lang_name=Eesti keel
+
+ok=OK
+cancel=Tühista
+yes=Jah
+no=Ei
+forward=Edasi
+back=Tagasi
+
+menu=Menüü
+exit=Välja
+hide=Peida

@@ -1,0 +1,13 @@
+﻿# Common M Language File for English. Quantity sufixes are '.1' and '.2'
+lang_name=English
+
+ok=OK
+cancel=Cancel
+yes=Yes
+no=No
+forward=Forward
+back=Back
+
+menu=Menu
+exit=Exit
+hide=Hide
