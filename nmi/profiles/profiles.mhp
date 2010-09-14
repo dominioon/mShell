@@ -1,0 +1,32 @@
+<b>Profiles modification</b>
+
+<k>profiles.<c0059cc>active</c>()</k>: Number
+<k>profiles.<c0059cc>active</c>(<a>newProfileId</a>)</k>: Number
+<k>profiles.<c0059cc>get</c>()</k>: Array
+<k>profiles.<c0059cc>get</c>(<a>profileId</a>)</k>: Array
+<i>profile data fields:</i> [id,name,ringtype,ringvolume,keyvolume,vibra,silent,ringtone,ringtone2,msgtone,emailtone,videotone,warntones,tts,groupids]
+
+<k>profiles.<c0059cc>list</c>()</k>: Array
+<i>profiles list:</i> [profileName: profileId]
+
+<k>profiles.<c0059cc>set</c>(<a>newData</a>)</k>: null
+<k>profiles.<c0059cc>set</c>(<a>newData</a>,<a>profileId</a>)</k>: null
+
+<i>profile Id constants:</i>
+<k>profiles.<c0059cc>default</c></k>=0
+<k>profiles.<c0059cc>silent</c></k>=1
+<k>profiles.<c0059cc>meeting</c></k>=2
+<k>profiles.<c0059cc>outdoor</c></k>=3
+<k>profiles.<c0059cc>pager</c></k>=4
+<k>profiles.<c0059cc>offline</c></k>=5
+<k>profiles.<c0059cc>drive</c></k>=6
+
+<i>ringing type constants:</i>
+<k>profiles.<c0059cc>ringNormal</c></k>=0
+<k>profiles.<c0059cc>ringAscending</c></k>=1
+<k>profiles.<c0059cc>ringOnce</c></k>=2
+<k>profiles.<c0059cc>ringBeep</c></k>=3
+<k>profiles.<c0059cc>ringSilent</c></k>=4
+
+<i>setter with prewritten keys:
+<k>profiles.<c0059cc>set</c>(<a>[<a>'name':'<a></a>',</a><a>'ringtype':<a>0..4</a>,</a><a>'ringvolume':<a>1..10</a>,</a><a>'keyvolume':<a>0..3</a>,</a><a>'vibra':<a>true|false</a>,</a><a>'ringtone':'<a></a>',</a><a>'ringtone2':'<a></a>',</a><a>'msgtone':'<a></a>',</a><a>'emailtone':'<a></a>',</a><a>'videotone':'<a></a>',</a><a>'warntones':<a>true|false</a>,</a><a>'tts':<a>true|false</a>,</a><a>'groupids':[<a></a>]</a>]</a><a>,<a>profileId</a></a>)</k>: null</i>
