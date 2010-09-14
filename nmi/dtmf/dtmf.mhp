@@ -1,0 +1,3 @@
+<b>DTMF tones</b>
+
+<k>dtmf.<c0059cc>send</c>(<a>tones</a>)</k>: null
