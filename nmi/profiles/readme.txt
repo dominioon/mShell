@@ -75,17 +75,6 @@ Constants:
 * profiles.ringSilent    - The phone is silent.
 
 -------------------------------------------------------------------------------
-The package contains:
- * readme.txt               - this file
- * Profiles-S60-3rd-DC.sis  - unsigned Profiles module for Symbian 3rd Devcert signing
- * Profiles-S60-3rd-OS.sis  - unsigned Profiles module for Symbian 3rd Online signing
- * Profiles-S60-3rd.sis     - selfsigned Profiles module for Symbian 3rd
- * Profiles-UIQ3-DC.sis     - unsigned Profiles module for UIQ3 Devcert signing
- * Profiles-UIQ3-OS.sis     - unsigned Profiles module for UIQ3 Online signing
- * Profiles-UIQ3.sis        - selfsigned Profiles module for UIQ3
- * ProfilesModule.cpp       - source code
-  
--------------------------------------------------------------------------------
 The module wraps profileengine.lib to mShell, therefore it requires FP1!
 
 -------------------------------------------------------------------------------
