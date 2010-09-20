@@ -121,6 +121,10 @@ private:
   }
 
 protected:
+  const char *ModuleVersion() { 
+    return "1.0"; 
+  }
+
   TInt ExpectedRuntimeVersion() { 
     return Runtime::VERSION; 
   }
@@ -211,9 +215,3 @@ protected:
 EXPORT_C NativeModule* NewProfilesModuleL() {
  return new (ELeave) ProfilesModule;
 }
-
-#ifndef EKA2
-GLDEF_C TInt E32Dll(TDllReason) {
- return KErrNone; 
-}
-#endif
