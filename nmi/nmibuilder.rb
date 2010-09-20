@@ -1,6 +1,18 @@
 require 'ftools'
 require 'pathname'
 
+# Predefined constants for different build targets.
+$all_v2 = [:S60_2, :UIQ_2]
+$all_v3s60 = [:S60_3_SELF, :S60_3_OS, :S60_3_DC]
+$all_v3uiq = [:UIQ_3_SELF, :UIQ_3_OS, :UIQ_3_DC]
+$all_v3 = $all_v3s60 + $all_v3uiq
+$all_v5 = [:S60_5_SELF, :S60_5_OS, :S60_5_DC]
+$all = $all_v2 + $all_v3 + $all_v5
+
+# Comment in if you are developing the NMI and want to build it only for one specific target.
+# Enabling in_development mode also preserves building files (.mmp, .pkg) and the generated dll.
+$in_development = :S60_5_DC
+
 # root folder of your NMI
 $nmi_root='C:/S60/nmisdk'
 
@@ -97,6 +109,7 @@ $pkg_template=
 %%PRODUCT_ID%%,0,0,0,{"Series60ProductID"}
 "%%SDK_ROOT%%/%%COMPILED_DLL_FOLDER%%%%MODULE_NAME%%_mm.dll"-"!:%%DLL_TARGET_FOLDER%%%%MODULE_NAME%%_mm.dll"
 '
+
 #IF package(%%M_SHELL_UID3%%)
 #"%%MODULE_NAME%%.mhp"-"!:\private\%%M_SHELL_FOLDER%%\%%MODULE_NAME%%.mhp"
 #ENDIF
@@ -118,7 +131,7 @@ end
 class Buildall
   def build
     ($in_development ? [$in_development] : $targets).each do |type|
-      type.new().build
+      Kernel.const_get(type).new().build
     end
     cleanup_common_files unless $in_development
   end
@@ -387,15 +400,4 @@ def build
   Buildall.new().build
 end
 
-# Comment in if you are developing the NMI and want to build it only for one specific target.
-# Enabling in_development mode also preserves building files (.mmp, .pkg) and the generated dll.
-#$in_development = S60_5_DC
-
-# Predefined constants for different build targets.
-$all_v2 = [S60_2, UIQ_2]
-$all_v3s60 = [S60_3_SELF, S60_3_OS, S60_3_DC]
-$all_v3uiq = [UIQ_3_SELF, UIQ_3_OS, UIQ_3_DC]
-$all_v3 = $all_v3s60 + $all_v3uiq
-$all_v5 = [S60_5_SELF, S60_5_OS, S60_5_DC]
-$all = $all_v2 + $all_v3 + $all_v5
 
