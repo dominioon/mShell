@@ -3,41 +3,17 @@
 #include <aknnotewrappers.h>
 #include <aknnotedialog.h>
 
+#include <AknQueryDialog.h>
+
 
 class Ui2Module : public NativeModule {
 private:
   enum {
-    MsgFunction, InfoFunction, WarningFunction, ErrorFunction
+    MsgFunction, InfoFunction, WarningFunction, ErrorFunction, 
+    PhoneFunction, TimeFunction, DateFunction, DurationFunction
   };
 
-protected:
-  const char *ModuleVersion() { 
-    return "2.0"; 
-  }
-
-  TInt ExpectedRuntimeVersion() { 
-    return Runtime::VERSION; 
-  }
-
-  void ConstructL() {
-    runtime->AddNativeFunctionL(_L("msg"), 1, 2, MsgFunction);
-    runtime->AddNativeFunctionL(_L("info"), 1, 2, InfoFunction);
-    runtime->AddNativeFunctionL(_L("warning"), 1, 2, WarningFunction);
-    runtime->AddNativeFunctionL(_L("error"), 1, 2, ErrorFunction);
-    
-#ifdef EKA2
-    runtime->AddConstantL(_L("shortesttimeout"), CAknNoteDialog::EShortestTimeout);
-#else
-    runtime->AddConstantL(_L("shortesttimeout"), 500000); // no const CAknNoteDialog::EShortestTimeout in S60v2
-#endif
-    runtime->AddConstantL(_L("shorttimeout"), CAknNoteDialog::EShortTimeout);
-    runtime->AddConstantL(_L("longtimeout"), CAknNoteDialog::ELongTimeout);
-    runtime->AddConstantL(_L("forever"), CAknNoteDialog::ENoTimeout);
-  }
-
-  Runtime::Value ExecuteL(TInt index, Runtime::Value *params,
-                          TInt paramCount, TRequestStatus &status) {
-
+  void ShowMessage(TInt index, Runtime::Value *params, TInt paramCount) {
     CAknResourceNoteDialog *dialog;
     switch (index) {
       case MsgFunction:
@@ -58,8 +34,89 @@ protected:
       dialog->SetTimeout((CAknNoteDialog::TTimeout)params[1].GetIntL());
     }
     dialog->ExecuteLD(message);
+  }
+  
+    Runtime::Value ShowDialog(TInt index, Runtime::Value *params, TInt paramCount) {
+      Runtime::Value result = Runtime::NullValue();
+      CAknQueryDialog *dialog;
+      if (index == PhoneFunction) {
+        TBuf<256> value1(paramCount > 1 ? params[1].GetPtrCL() : _L(""));
+        dialog = CAknTextQueryDialog::NewL((TDes&)value1);
+        dialog->SetPromptL(params[0].GetPtrCL());
+        if (dialog->ExecuteLD(R_AVKON_DIALOG_QUERY_VALUE_PHONE)) result = runtime->NewStringL(value1);
+      }
+      else if(index == DateFunction) {
+        TTime value2(paramCount > 1 ? params[1].GetTimeL() : 0);
+        dialog = CAknTimeQueryDialog::NewL(value2);
+        dialog->SetPromptL(params[0].GetPtrCL());
+        if (dialog->ExecuteLD(R_AVKON_DIALOG_QUERY_VALUE_DATE)) result.SetTime(value2);
+      }
+      else if(index == TimeFunction) {
+        TTime value3(paramCount > 1 ? params[1].GetTimeL() : 0);
+        dialog = CAknTimeQueryDialog::NewL(value3);
+        dialog->SetPromptL(params[0].GetPtrCL());
+        if (dialog->ExecuteLD(R_AVKON_DIALOG_QUERY_VALUE_TIME)) result.SetTime(value3);
+      }
+      else if(index == DurationFunction) {
+        TTimeIntervalSeconds value4(paramCount > 1 ? params[1].GetIntL()/1000 : 0);
+        dialog = CAknDurationQueryDialog::NewL(value4);
+        dialog->SetPromptL(params[0].GetPtrCL());
+        if (dialog->ExecuteLD(R_AVKON_DIALOG_QUERY_VALUE_DURATION)) result.SetNumber(value4.Int()*1000);
+      }
+      return result;
+    }
+
+protected:
+  const char *ModuleVersion() { 
+    return "3.0"; 
+  }
+
+  TInt ExpectedRuntimeVersion() { 
+    return Runtime::VERSION; 
+  }
+
+  void ConstructL() {
+    runtime->AddNativeFunctionL(_L("msg"), 1, 2, MsgFunction);
+    runtime->AddNativeFunctionL(_L("info"), 1, 2, InfoFunction);
+    runtime->AddNativeFunctionL(_L("warning"), 1, 2, WarningFunction);
+    runtime->AddNativeFunctionL(_L("error"), 1, 2, ErrorFunction);
     
-    return Runtime::NullValue();
+    runtime->AddNativeFunctionL(_L("phone"), 1, 2, PhoneFunction);
+    runtime->AddNativeFunctionL(_L("time"), 1, 2, TimeFunction);
+    runtime->AddNativeFunctionL(_L("date"), 1, 2, DateFunction);
+    runtime->AddNativeFunctionL(_L("duration"), 1, 2, DurationFunction);
+    
+#ifdef EKA2
+    runtime->AddConstantL(_L("tiny"), CAknNoteDialog::EShortestTimeout);
+#else
+    runtime->AddConstantL(_L("tiny"), 500000); // no const CAknNoteDialog::EShortestTimeout in S60v2
+#endif
+    runtime->AddConstantL(_L("short"), CAknNoteDialog::EShortTimeout);
+    runtime->AddConstantL(_L("long"), CAknNoteDialog::ELongTimeout);
+    runtime->AddConstantL(_L("forever"), CAknNoteDialog::ENoTimeout);
+  }
+
+  Runtime::Value ExecuteL(TInt index, Runtime::Value *params,
+                          TInt paramCount, TRequestStatus &status) {
+    Runtime::Value result;
+
+    switch (index) {
+      case MsgFunction:
+      case InfoFunction:
+      case WarningFunction:
+      case ErrorFunction:
+        ShowMessage(index, params, paramCount);
+        result.SetNull();
+        break;
+      
+      case PhoneFunction:
+      case TimeFunction:
+      case DateFunction:
+      case DurationFunction:
+        result = ShowDialog(index, params, paramCount);
+        break;
+    }
+    return result;
   }
 };
 
