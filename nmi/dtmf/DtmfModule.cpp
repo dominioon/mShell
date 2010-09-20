@@ -2,6 +2,8 @@
 #include <e32base.h>
 #include <Etel3rdParty.h>
 
+_LIT(ERROR_2007, "ErrCallNotActive: Call not active");
+
 class DtmfModule : public NativeModule {
 private:
   enum {
@@ -16,6 +18,10 @@ private:
   }
 
 protected:
+  const char *ModuleVersion() { 
+    return "1.0"; 
+  }
+
   TInt ExpectedRuntimeVersion() { 
     return Runtime::VERSION; 
   }
@@ -48,6 +54,15 @@ protected:
       }
     }
     return result;
+  }
+
+  const TDesC& GetErrorMessage(TInt error) {
+    if(error == -2007) {
+      return ERROR_2007;
+    } 
+    else {
+      return NativeModule::GetErrorMessage(error);
+    }
   }
 
   void Cancel() { 
