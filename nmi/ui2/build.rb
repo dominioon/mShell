@@ -5,7 +5,7 @@ $module_data = {
   :name => 'UI2',
   :description => 'mShell UI2 module',
   :version => '2,0,0',
-  :source => 'Ui2Module2.cpp',
+  :source => 'Ui2Module.cpp',
   :ext_libs => 'avkon.lib eikcdlg.lib eikctl.lib'       
 }
 
