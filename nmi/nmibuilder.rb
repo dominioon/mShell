@@ -11,7 +11,7 @@ $all = $all_v2 + $all_v3 + $all_v5
 
 # Comment in if you are developing the NMI and want to build it only for one specific target.
 # Enabling in_development mode also preserves building files (.mmp, .pkg) and the generated dll.
-$in_development = :S60_5_DC
+# $in_development = :S60_5_DC
 
 # root folder of your NMI
 $nmi_root='C:/S60/nmisdk'
